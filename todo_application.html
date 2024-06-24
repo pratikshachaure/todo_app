@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+        }
+        h1 {
+            text-align: center;
+            color: palevioletred;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: palevioletred;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #d45d7d;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color:whitesmoke;
+            margin-bottom: 10px;
+            padding: 0 10px;
+            border-radius: 5px;
+            box-shadow: 0 6px 7px rgba(0, 0, 0, 0.1);
+        }
+        span {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        li input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <input type="text" placeholder="Add your Todo" id="todo">
+        <button onclick="addtask()">Add Task</button>
+        <ul id="list-container"></ul>
+    </div>
+
+    <script>
+        let inputfield = document.getElementById('todo');
+        let list_container = document.getElementById('list-container');
+        
+        function addtask() {
+           
+            let li = document.createElement('li');
+            let checkbox = document.createElement('input');
+            checkbox.type = "checkbox";
+            li.appendChild(checkbox);
+
+            checkbox.addEventListener("click",function(){
+            if(checkbox.checked==true)
+            {
+                li.style.textDecoration="line-through";
+             
+               
+            }
+            else{
+                li.style.textDecoration="none";
+
+            }
+       })
+           
+ 
+            let textNode = document.createTextNode(inputfield.value);
+            li.appendChild(textNode);
+
+            let span = document.createElement('span');
+            span.innerHTML = "&times";
+            li.appendChild(span);
+
+            list_container.appendChild(li);
+
+            span.addEventListener("click", function(e) {
+                if (e.target.tagName === "SPAN") {
+                    e.target.parentElement.remove();
+                    saveData();
+                }
+            });
+
+            inputfield.value = "";
+            saveData();
+            list_container.insertBefore(li, list_container.firstChild);
+            console.log(list_container.firstChild)
+        }
+
+        function saveData() {
+            localStorage.setItem("data", list_container.innerHTML);
+        }
+
+        function showtask() {
+            list_container.innerHTML = localStorage.getItem("data");
+        }
+
+        list_container.addEventListener("click", function(e) {
+            if (e.target.tagName === "SPAN") {
+                e.target.parentElement.remove();
+                saveData();
+            }
+            
+        });
+
+        showtask();
+        console.log("hellow world")
+    </script>
+</body>
+</html>
